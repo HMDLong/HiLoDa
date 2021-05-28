@@ -16,6 +16,6 @@ public class Context {
     }
 
     public void execute(){
-
+        this.algo.run(this.graph);
     }
 }
