@@ -127,11 +127,14 @@ public class MenuController implements Initializable {
 
     //Check exits edge
     boolean checkEdge(NodeFX source, NodeFX target){
+        /*
         for(EdgeGraph e: edges){
             if((e.s1 == source.node && e.s2 == target.node) || (source.node == target.node) )
                 return true;
         }
         return false;
+         */
+        return context.graph.getAdjacentMap().get(Integer.valueOf(source.node.name)).containsKey(Integer.valueOf(target.node.name));
     }
 
     //Add edge
@@ -148,58 +151,60 @@ public class MenuController implements Initializable {
                             weight = new Label();
                             System.out.println("Adding Edge");
                             if(undirect){
-                                edgeLine = new Line(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
-                                paneGroup.getChildren().add(edgeLine);
-                                edgeLine.setId("Line");
                                 //Add weight
-                                weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
-                                weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
-                                TextInputDialog dialog = new TextInputDialog("0");
+                                TextInputDialog dialog = new TextInputDialog();
                                 dialog.setTitle(null);
                                 dialog.setHeaderText("Add weight :");
                                 dialog.setContentText(null);
                                 Optional<String> result = dialog.showAndWait();
                                 if (result.isPresent()) {
+                                    // Set up visual edge
                                     weight.setText(result.get());
-                                } else {
-                                    weight.setText("0");
+                                    weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
+                                    weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
+                                    paneGroup.getChildren().add(weight);
+
+                                    edgeLine = new Line(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
+                                    edgeLine.setId("Line");
+                                    paneGroup.getChildren().add(edgeLine);
+                                    /*
+                                    //Add edge to arraylist
+                                    temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
+                                    selectedNode.node.adjacents.add(new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), edgeLine, weight));
+                                    circle.node.adjacents.add(new EdgeGraph(circle.node, selectedNode.node, Double.valueOf(weight.getText()), edgeLine, weight));
+                                    edges.add(selectedNode.node.adjacents.get(selectedNode.node.adjacents.size() - 1));
+                                    edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
+                                    // ^
+                                     */
+                                    context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
+                                    // to check treemap on console
+                                    context.graph.print();
                                 }
-                                paneGroup.getChildren().add(weight);
-                                // v
-                                //Add edge to arraylist
-                                temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
-                                selectedNode.node.adjacents.add(new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                circle.node.adjacents.add(new EdgeGraph(circle.node, selectedNode.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                edges.add(selectedNode.node.adjacents.get(selectedNode.node.adjacents.size() - 1));
-                                edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
-                                // ^
-                                context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
-                                // to check treemap on console
-                                context.graph.print();
                             }else if(direct){
-                                arrow = new ArrowGraph(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
-                                paneGroup.getChildren().add(arrow);
-                                arrow.setId("arrow");
-                                //Add weight
-                                weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
-                                weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
-                                TextInputDialog dialog = new TextInputDialog("0");
+                                // Prompt weight
+                                TextInputDialog dialog = new TextInputDialog();
                                 dialog.setTitle(null);
                                 dialog.setHeaderText("Add weight :");
                                 dialog.setContentText(null);
                                 Optional<String> result = dialog.showAndWait();
                                 if (result.isPresent()) {
+                                    // Set up visual edge
                                     weight.setText(result.get());
-                                } else {
-                                    weight.setText("0");
+                                    weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
+                                    weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
+                                    paneGroup.getChildren().add(weight);
+
+                                    arrow = new ArrowGraph(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
+                                    arrow.setId("arrow");
+                                    paneGroup.getChildren().add(arrow);
+
+                                    //Add edge to arraylist
+                                    context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
+                                    temp = new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), arrow, weight);
+                                    edges.add(temp);
+                                    //To check treemap on console
+                                    context.graph.print();
                                 }
-                                paneGroup.getChildren().add(weight);
-                                //Add edge to arraylist
-                                context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
-                                temp = new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), arrow, weight);
-                                edges.add(temp);
-                                // to check treemap on console
-                                context.graph.print();
                             }
                             if (addNode || addEdge) {
                                 selectedNode.isSelected = false;
