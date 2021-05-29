@@ -40,7 +40,7 @@ public class MenuController implements Initializable {
     @FXML
     private Group paneGroup;
     @FXML
-    private Button backButton, clearButton;
+    private Button backButton, clearButton, runButton, stepButton;
     @FXML
     private JFXToggleButton primButton, kruButton, dijkButton, addEdgeButton, addNodeButton;
     @FXML
@@ -83,6 +83,8 @@ public class MenuController implements Initializable {
         addNodeButton.setSelected(true);
         addNodeButton.setDisable(false);
         clearButton.setDisable(true);
+        runButton.setDisable(true);
+        stepButton.setDisable(true);
         initContext();
         System.out.println("Init success");
     }
@@ -254,6 +256,19 @@ public class MenuController implements Initializable {
             id.setLayoutY(y - 35);
         }
     }
+    //Handle run button
+    @FXML
+    public void runClick(){
+        System.out.println("Run");
+        //Extend...
+    }
+
+    //Handle step button
+    @FXML
+    public void stepClick(){
+        System.out.println("Step");
+        //Extend...
+    }
 
     //Handle clear button
     @FXML
@@ -272,6 +287,11 @@ public class MenuController implements Initializable {
         primButton.setDisable(true);
         kruButton.setDisable(true);
         dijkButton.setDisable(true);
+        primButton.setSelected(false);
+        kruButton.setSelected(false);
+        dijkButton.setSelected(false);
+        runButton.setDisable(true);
+        stepButton.setDisable(true);
         nNode = 0;
         context.setGraph(makeGraph());
     }
@@ -304,56 +324,44 @@ public class MenuController implements Initializable {
         addEdgeButton.setSelected(false);
     }
 
-    // Handle Prim
+    //Handle prim button
     @FXML
-    public void PrimActivate(){
-        ClearColor();
+    public void primHandle(){
         addNode = false;
         addEdge = false;
-        selectedNode = null;
-        primButton.setDisable(false);
-        context.setAlgo(new Prim());
-        context.execute();
+        addNodeButton.setDisable(true);
+        addEdgeButton.setDisable(true);
+        kruButton.setSelected(false);
+        dijkButton.setSelected(false);
+        runButton.setDisable(false);
+        stepButton.setDisable(false);
+        addNodeButton.setSelected(false);
+        addEdgeButton.setSelected(false);
     }
 
-    // Handle Kruskal
+    //Handle kru button
     @FXML
-    public void KruskalActivate(){
-        ClearColor();
+    public void kruHandle(){
         addNode = false;
         addEdge = false;
-        selectedNode = null;
-        kruButton.setDisable(false);
-        context.setAlgo(new Kruskal());
-        context.execute();
+        addNodeButton.setDisable(true);
+        addEdgeButton.setDisable(true);
+        primButton.setSelected(false);
+        dijkButton.setSelected(false);
+        runButton.setDisable(false);
+        stepButton.setDisable(false);
     }
 
-    // Handle Dijkstra
+    //Handle dijk button
     @FXML
-    public void dijsktraActivate(){
-        ClearColor();
+    public void dijkHandle(){
         addNode = false;
         addEdge = false;
-        selectedNode = null;
-        dijkButton.setDisable(false);
-        context.setAlgo(new Dijsktra());
-        context.execute();
-    }
-
-    //clearColor ---> SET TO BUTTON
-    public void ClearColor(){
-        for (EdgeGraph eg: context.edgefx){
-            FillTransition ft1 = new FillTransition(Duration.millis(50), eg.s1.circle);
-            ft1.setToValue(Color.GRAY);
-            ft1.play();
-
-            FillTransition ft2 = new FillTransition(Duration.millis(50), eg.s2.circle);
-            ft2.setToValue(Color.GRAY);
-            ft2.play();
-
-            StrokeTransition ftEdge = new StrokeTransition(Duration.millis(50), eg.line);
-            ftEdge.setToValue(Color.GRAY);
-            ftEdge.play();
-        }
+        addNodeButton.setDisable(true);
+        addEdgeButton.setDisable(true);
+        kruButton.setSelected(false);
+        primButton.setSelected(false);
+        runButton.setDisable(false);
+        stepButton.setDisable(false);
     }
 }
