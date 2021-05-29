@@ -1,7 +1,6 @@
 package graphEngine.algos;
 
 import graphEngine.graph.DirectedGraph;
-import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.VertexDistRecord;
 import javafx.animation.FillTransition;
 import javafx.animation.StrokeTransition;
@@ -10,23 +9,22 @@ import javafx.util.Duration;
 import sample.EdgeGraph;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Prim implements AbstractAlgo {
+public class Prim extends AbstractAlgo implements Runnable {
     private VertexDistRecord[] distTable;
     public int MSTweight = 0;
 
     @Override
-    public void run(TreeMapGraph graph, List<EdgeGraph> edgefx){
+    public void run(){
         // check graph
-        if(graph instanceof DirectedGraph) return;
+        if(this.graph instanceof DirectedGraph) return;
         // adapting
         this.distTable = new VertexDistRecord[graph.getAdjacentMap().size()];
 
         // initializing
-        boolean[] visited = new boolean[graph.getAdjacentMap().size()];
+        boolean[] visited = new boolean[this.graph.getAdjacentMap().size()];
         Arrays.fill(visited, false);
 
         Arrays.fill(distTable, new VertexDistRecord(-1, Integer.MAX_VALUE));
@@ -67,7 +65,7 @@ public class Prim implements AbstractAlgo {
                         StrokeTransition ftEdge = new StrokeTransition(Duration.millis(100), eg.line);
                         ftEdge.setToValue(Color.ORANGERED);
                         ftEdge.play();
-                        Thread.sleep(1000);
+                        Thread.sleep(2500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

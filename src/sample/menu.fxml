@@ -35,7 +35,7 @@
                               <Font size="17.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXToggleButton fx:id="kruButton" minWidth="-Infinity" text="Kruskal" textFill="WHITE">
+                        <JFXToggleButton fx:id="kruButton" minWidth="-Infinity" text="Kruskal" onAction="#KruskalActivate" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>

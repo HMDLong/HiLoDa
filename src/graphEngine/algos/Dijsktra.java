@@ -6,7 +6,7 @@ import sample.EdgeGraph;
 
 import java.util.*;
 
-public class Dijsktra implements AbstractAlgo {
+public class Dijsktra extends AbstractAlgo {
     private VertexDistRecord[] distTable;
     public int start_vertex;
 
@@ -20,7 +20,8 @@ public class Dijsktra implements AbstractAlgo {
     }
 
     @Override
-    public void run(TreeMapGraph graph, List<EdgeGraph> edgefx){
+    public void run(){
+        //TreeMapGraph graph, List<EdgeGraph> edgefx
         /* prompt for start_vertex here */
         this.start_vertex = 0;
 
