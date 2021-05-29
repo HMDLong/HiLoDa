@@ -1,6 +1,9 @@
 package sample;
 
 import com.jfoenix.controls.JFXToggleButton;
+import graphEngine.algos.Dijsktra;
+import graphEngine.algos.Kruskal;
+import graphEngine.algos.Prim;
 import graphEngine.context.Context;
 import graphEngine.graph.DirectedGraph;
 import graphEngine.graph.TreeMapGraph;
@@ -8,6 +11,7 @@ import graphEngine.graph.UndirectedGraph;
 import javafx.animation.FillTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
+import javafx.animation.StrokeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,12 +56,11 @@ public class MenuController implements Initializable {
 
     // List node graph
     List<NodeFX> nodes = new ArrayList<>();
-    // List edge graph
-    List<EdgeGraph> edges = new ArrayList<>();
     // Context
     Context context;
 
-    private boolean direct = MainController.directed, undirect = MainController.undirected;
+    private final boolean direct = MainController.directed;
+    private final boolean undirect = MainController.undirected;
 
     public TreeMapGraph makeGraph(){
         if(direct) return new DirectedGraph();
@@ -67,6 +70,7 @@ public class MenuController implements Initializable {
     public void initContext(){
         context = new Context();
         context.setGraph(makeGraph());
+        context.edgefx = new ArrayList<>();
     }
 
     int nNode = 0;
@@ -129,13 +133,6 @@ public class MenuController implements Initializable {
 
     //Check exits edge
     boolean checkEdge(NodeFX source, NodeFX target){
-        /*
-        for(EdgeGraph e: edges){
-            if((e.s1 == source.node && e.s2 == target.node) || (source.node == target.node) )
-                return true;
-        }
-        return false;
-         */
         return context.graph.getAdjacentMap().get(Integer.valueOf(source.node.name)).containsKey(Integer.valueOf(target.node.name));
     }
 
@@ -168,6 +165,7 @@ public class MenuController implements Initializable {
 
                                     edgeLine = new Line(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
                                     edgeLine.setId("Line");
+                                    edgeLine.setStyle("-fx-stroke-width: 4; -fx-opacity: 0.6;");
                                     paneGroup.getChildren().add(edgeLine);
                                     /*
                                     //Add edge to arraylist
@@ -178,6 +176,8 @@ public class MenuController implements Initializable {
                                     edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
                                     // ^
                                      */
+                                    temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
+                                    context.edgefx.add(temp);
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     // to check treemap on console
                                     context.graph.print();
@@ -198,12 +198,14 @@ public class MenuController implements Initializable {
 
                                     arrow = new ArrowGraph(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
                                     arrow.setId("arrow");
+                                    arrow.setStyle("-fx-stroke-width: 4; -fx-opacity: 0.6;");
                                     paneGroup.getChildren().add(arrow);
 
                                     //Add edge to arraylist
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), arrow, weight);
-                                    edges.add(temp);
+                                    //edges.add(temp);
+                                    context.edgefx.add(temp);
                                     //To check treemap on console
                                     context.graph.print();
                                 }
