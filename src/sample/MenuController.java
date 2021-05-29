@@ -1,6 +1,7 @@
 package sample;
 
 import com.jfoenix.controls.JFXToggleButton;
+import graphEngine.algos.Dijsktra;
 import graphEngine.algos.Kruskal;
 import graphEngine.algos.Prim;
 import graphEngine.context.Context;
@@ -328,6 +329,16 @@ public class MenuController implements Initializable {
     }
 
     // Handle Dijkstra
+    @FXML
+    public void dijsktraActivate(){
+        ClearColor();
+        addNode = false;
+        addEdge = false;
+        selectedNode = null;
+        dijkButton.setDisable(false);
+        context.setAlgo(new Dijsktra());
+        context.execute();
+    }
 
     //clearColor ---> SET TO BUTTON
     public void ClearColor(){

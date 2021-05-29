@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.StrokeType;
 
 public class ArrowGraph extends Path {
     private static final double defaultArrowHeadSize = 7;
@@ -16,8 +17,10 @@ public class ArrowGraph extends Path {
         this.endX = endX;
         this.endY = endY;
 
-        strokeProperty().bind(fillProperty());
+        setStrokeType(StrokeType.CENTERED);
+        setStroke(Color.BLACK);
         setFill(Color.BLACK);
+        setStrokeWidth(5.0);
 
         //Line
         getElements().add(new MoveTo(startX, startY));

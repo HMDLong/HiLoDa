@@ -40,7 +40,7 @@
                               <Font size="17.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXToggleButton fx:id="dijkButton" text="Dijkstra" textFill="WHITE">
+                        <JFXToggleButton fx:id="dijkButton" text="Dijkstra" textFill="WHITE" onAction="#dijsktraActivate">
                            <font>
                               <Font size="17.0" />
                            </font>

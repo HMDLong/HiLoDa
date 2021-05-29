@@ -2,6 +2,11 @@ package graphEngine.algos;
 
 import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.VertexDistRecord;
+import javafx.animation.FillTransition;
+import javafx.animation.StrokeTransition;
+import javafx.animation.PathTransition;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import sample.EdgeGraph;
 
 import java.util.*;
@@ -53,6 +58,30 @@ public class Dijsktra extends AbstractAlgo {
                 }
             }
 
+            String begin = String.valueOf(record.vertex_id);
+            String end = String.valueOf(this.distTable[record.vertex_id].vertex_id);
+            for(EdgeGraph eg: this.edgefx) {
+                if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
+                        (eg.s1.name.equals(end) && eg.s2.name.equals(begin))) {
+                    try {
+                        FillTransition ft1 = new FillTransition(Duration.millis(100), eg.s1.circle);
+                        ft1.setToValue(Color.BLUEVIOLET);
+                        ft1.play();
+
+                        FillTransition ft2 = new FillTransition(Duration.millis(100), eg.s2.circle);
+                        ft2.setToValue(Color.BLUEVIOLET);
+                        ft2.play();
+
+                        eg.line.strokeProperty().unbind();
+                        StrokeTransition ftEdge = new StrokeTransition(Duration.millis(100), eg.line);
+                        ftEdge.setToValue(Color.YELLOW);
+                        ftEdge.play();
+                        Thread.sleep(2500);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             /* Visualization code here */
             System.out.println(this.distTable[record.vertex_id].vertex_id + "--->" + record.vertex_id + " = " + record.weight);
         }
