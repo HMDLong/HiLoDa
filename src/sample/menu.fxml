@@ -30,7 +30,7 @@
                   </Label>
                   <VBox layoutY="98.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <JFXToggleButton fx:id="primButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Prim" textFill="#fffbfb">
+                        <JFXToggleButton fx:id="primButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#PrimActivate" text="Prim" textFill="#fffbfb">
                            <font>
                               <Font size="17.0" />
                            </font>

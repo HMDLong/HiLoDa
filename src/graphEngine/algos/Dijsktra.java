@@ -2,11 +2,9 @@ package graphEngine.algos;
 
 import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.VertexDistRecord;
+import sample.EdgeGraph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Dijsktra implements AbstractAlgo {
     private VertexDistRecord[] distTable;
@@ -22,7 +20,7 @@ public class Dijsktra implements AbstractAlgo {
     }
 
     @Override
-    public void run(TreeMapGraph graph){
+    public void run(TreeMapGraph graph, List<EdgeGraph> edgefx){
         /* prompt for start_vertex here */
         this.start_vertex = 0;
 

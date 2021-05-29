@@ -1,6 +1,7 @@
 package sample;
 
 import com.jfoenix.controls.JFXToggleButton;
+import graphEngine.algos.Prim;
 import graphEngine.context.Context;
 import graphEngine.graph.DirectedGraph;
 import graphEngine.graph.TreeMapGraph;
@@ -176,6 +177,8 @@ public class MenuController implements Initializable {
                                     edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
                                     // ^
                                      */
+                                    temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
+                                    edges.add(temp);
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     // to check treemap on console
                                     context.graph.print();
@@ -301,4 +304,20 @@ public class MenuController implements Initializable {
         addNodeButton.setSelected(true);
         addEdgeButton.setSelected(false);
     }
+
+    // Handle Prim
+    @FXML
+    public void PrimActivate(){
+        addNode = false;
+        addEdge = false;
+        selectedNode = null;
+        primButton.setDisable(false);
+
+        context.setAlgo(new Prim());
+        context.execute(this.edges);
+    }
+
+    // Handle Kruskal
+
+    // Handle Dijkstra
 }

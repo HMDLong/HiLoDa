@@ -3,7 +3,9 @@ package graphEngine.algos;
 import graphEngine.graph.DirectedGraph;
 import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.EdgeRecord;
+import sample.EdgeGraph;
 
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
@@ -40,7 +42,7 @@ public class Kruskal implements AbstractAlgo{
     }
 
     @Override
-    public void run(TreeMapGraph graph){
+    public void run(TreeMapGraph graph, List<EdgeGraph> edgefx){
         // graph check
         if(graph instanceof DirectedGraph) return;
         // initialize the parent tables: using Disjoint-set / Set-Union algo to detect cycle

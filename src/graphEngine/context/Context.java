@@ -1,7 +1,11 @@
 package graphEngine.context;
 
 import graphEngine.algos.AbstractAlgo;
+import graphEngine.algos.Prim;
 import graphEngine.graph.TreeMapGraph;
+import sample.EdgeGraph;
+
+import java.util.List;
 
 public class Context {
     public TreeMapGraph graph;
@@ -15,7 +19,7 @@ public class Context {
         this.algo = algo;
     }
 
-    public void execute(){
-        this.algo.run(this.graph);
+    public void execute(List<EdgeGraph> edgefx){
+       this.algo.run(this.graph, edgefx);
     }
 }
