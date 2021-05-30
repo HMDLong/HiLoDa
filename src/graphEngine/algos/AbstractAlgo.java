@@ -47,8 +47,6 @@ public abstract class AbstractAlgo implements Runnable{
 
     public abstract void init();
 
-
-
     // Abstract class implements Interface --> DONT'T NEED OVERRIDE run() method
 
 }

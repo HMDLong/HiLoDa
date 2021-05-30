@@ -80,8 +80,6 @@ public class Kruskal extends AbstractAlgo{
                         this.resultEdges.add(eg);
                     }
                 }
-
-                //System.out.printf("Edge %d:(%d, %d) cost:%d \n", i, next_edge.v1, next_edge.v2, next_edge.weight);
             }
         }
     }
@@ -91,7 +89,7 @@ public class Kruskal extends AbstractAlgo{
         for (EdgeGraph eg: this.resultEdges) {
             try {
                 edgeColoring(eg, this.color);
-                Thread.sleep(2500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -53,7 +53,6 @@ public class Prim extends AbstractAlgo implements Runnable {
                     this.resultEdges.add(eg);
                 }
             }
-            //System.out.println(this.distTable[record.vertex_id].vertex_id + "---" + record.vertex_id + " = " + record.weight);
         }
     }
 
@@ -62,7 +61,7 @@ public class Prim extends AbstractAlgo implements Runnable {
         for (EdgeGraph eg: this.resultEdges) {
             try{
                 edgeColoring(eg,this.color);
-                Thread.sleep(2500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

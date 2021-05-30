@@ -168,15 +168,7 @@ public class MenuController implements Initializable {
                                     edgeLine.setId("Line");
                                     edgeLine.setStyle("-fx-stroke-width: 4; -fx-opacity: 0.6;");
                                     paneGroup.getChildren().add(edgeLine);
-                                    /*
-                                    //Add edge to arraylist
-                                    temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
-                                    selectedNode.node.adjacents.add(new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                    circle.node.adjacents.add(new EdgeGraph(circle.node, selectedNode.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                    edges.add(selectedNode.node.adjacents.get(selectedNode.node.adjacents.size() - 1));
-                                    edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
-                                    // ^
-                                     */
+
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
                                     context.edgefx.add(temp);
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
@@ -264,7 +256,6 @@ public class MenuController implements Initializable {
         System.out.println("Clear");
         paneGroup.getChildren().clear();
         paneGroup.getChildren().addAll(viewer);
-        //nodes = new ArrayList<>();
         addNode = true;
         addEdge = false;
         selectedNode = null;
@@ -283,16 +274,14 @@ public class MenuController implements Initializable {
         nNode = 0;
         context.setGraph(makeGraph());
     }
+
     //Handle back button
     @FXML
     public void backClick(ActionEvent actionEvent){
-        /*Stage newHome = new Stage();
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
-        newHome.setScene(new Scene(anchorPane));
-        newHome.show();*/
         MainController.menu.hide();
         Main.home.show();
     }
+
     //Handle addEdge button
     @FXML
     public void addEdgeHandle() {
@@ -326,8 +315,9 @@ public class MenuController implements Initializable {
         stepButton.setDisable(false);
         addNodeButton.setSelected(false);
         addEdgeButton.setSelected(false);
-        context.setAlgo(new Prim());
-        context.setCount(-1);
+        context.setup(new Prim());
+        //context.setAlgo(new Prim());
+        //context.setCount(-1);
     }
 
     //Handle kru button
@@ -337,13 +327,14 @@ public class MenuController implements Initializable {
         addNode = false;
         addEdge = false;
         addNodeButton.setDisable(true);
+        addNodeButton.setSelected(false);
         addEdgeButton.setDisable(true);
+        addEdgeButton.setSelected(false);
         primButton.setSelected(false);
         dijkButton.setSelected(false);
         runButton.setDisable(false);
         stepButton.setDisable(false);
-        context.setAlgo(new Kruskal());
-        context.setCount(-1);
+        context.setup(new Kruskal());
     }
 
     //Handle dijk button
@@ -358,8 +349,7 @@ public class MenuController implements Initializable {
         primButton.setSelected(false);
         runButton.setDisable(false);
         stepButton.setDisable(false);
-        context.setAlgo(new Dijsktra());
-        context.setCount(-1);
+        context.setup(new Dijsktra());
     }
 
     public void ClearColor(){
@@ -379,8 +369,6 @@ public class MenuController implements Initializable {
     @FXML
     public void stepClick(){
         System.out.println("Run Step By Step");
-        int temp = context.getCount();
-        context.setCount(temp + 1);
         context.runStepByStep();
     }
 }
