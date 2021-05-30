@@ -1,15 +1,13 @@
 package graphEngine.algos;
 
-import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.VertexDistRecord;
-import javafx.animation.FillTransition;
-import javafx.animation.StrokeTransition;
-import javafx.animation.PathTransition;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import sample.EdgeGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Dijsktra extends AbstractAlgo {
     private VertexDistRecord[] distTable;
@@ -25,7 +23,8 @@ public class Dijsktra extends AbstractAlgo {
     }
 
     @Override
-    public void run(){
+    public void init(){
+        this.color = Color.LIGHTGREEN;
         //TreeMapGraph graph, List<EdgeGraph> edgefx
         /* prompt for start_vertex here */
         this.start_vertex = 0;
@@ -63,27 +62,11 @@ public class Dijsktra extends AbstractAlgo {
             for(EdgeGraph eg: this.edgefx) {
                 if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
                         (eg.s1.name.equals(end) && eg.s2.name.equals(begin))) {
-                    try {
-                        FillTransition ft1 = new FillTransition(Duration.millis(100), eg.s1.circle);
-                        ft1.setToValue(Color.BLUEVIOLET);
-                        ft1.play();
-
-                        FillTransition ft2 = new FillTransition(Duration.millis(100), eg.s2.circle);
-                        ft2.setToValue(Color.BLUEVIOLET);
-                        ft2.play();
-
-                        eg.line.strokeProperty().unbind();
-                        StrokeTransition ftEdge = new StrokeTransition(Duration.millis(100), eg.line);
-                        ftEdge.setToValue(Color.YELLOW);
-                        ftEdge.play();
-                        Thread.sleep(2500);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    this.resultEdges.add(eg);
                 }
             }
             /* Visualization code here */
-            System.out.println(this.distTable[record.vertex_id].vertex_id + "--->" + record.vertex_id + " = " + record.weight);
+            //System.out.println(this.distTable[record.vertex_id].vertex_id + "--->" + record.vertex_id + " = " + record.weight);
         }
     }
 
@@ -116,4 +99,18 @@ public class Dijsktra extends AbstractAlgo {
                 }
             }
     }
+
+    @Override
+    public void run(){
+        for (EdgeGraph eg: this.resultEdges) {
+            try {
+                edgeColoring(eg,this.color);
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Dijkstra Smallest Path = " + this.smallWeight);
+    }
+
 }

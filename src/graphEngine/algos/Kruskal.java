@@ -2,10 +2,7 @@ package graphEngine.algos;
 
 import graphEngine.graph.DirectedGraph;
 import graphEngine.utils.EdgeRecord;
-import javafx.animation.FillTransition;
-import javafx.animation.StrokeTransition;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import sample.EdgeGraph;
 
 import java.util.Map;
@@ -44,9 +41,10 @@ public class Kruskal extends AbstractAlgo{
     }
 
     @Override
-    public void run(){
+    public void init(){
         // graph check
         if(graph instanceof DirectedGraph) return;
+        this.color = Color.LIGHTSKYBLUE;
         // initialize the parent tables: using Disjoint-set / Set-Union algo to detect cycle
         Subsets[] subsets = new Subsets[graph.getVerticesSize()];
         // initialize the edges priority queue
@@ -64,7 +62,6 @@ public class Kruskal extends AbstractAlgo{
             subsets[v].rank = 0;
         }
         // start algorithm
-        int MSTweight = 0;
         for (int i=0; i < graph.getVerticesSize();i++) {
             EdgeRecord next_edge = queue.poll();
             assert next_edge != null;
@@ -74,38 +71,33 @@ public class Kruskal extends AbstractAlgo{
             //No cycle --> add
             if (x != y) {
                 Union(subsets, x, y);
-                MSTweight += next_edge.weight;
+                this.smallWeight += next_edge.weight;
 
                 String begin = String.valueOf(next_edge.v1);
                 String end = String.valueOf(next_edge.v2);
                 for(EdgeGraph eg: this.edgefx){
                     if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
                             (eg.s1.name.equals(end) && eg.s2.name.equals(begin))){
-                        try{
-                            FillTransition ft1 = new FillTransition(Duration.millis(100), eg.s1.circle);
-                            ft1.setToValue(Color.BLUEVIOLET);
-                            ft1.play();
-
-                            FillTransition ft2 = new FillTransition(Duration.millis(100), eg.s2.circle);
-                            ft2.setToValue(Color.BLUEVIOLET);
-                            ft2.play();
-
-                            StrokeTransition ftEdge = new StrokeTransition(Duration.millis(100), eg.line);
-                            ftEdge.setToValue(Color.YELLOW);
-                            ftEdge.play();
-                            Thread.sleep(2500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
+                        this.resultEdges.add(eg);
                     }
                 }
-                /* Visualization code here */
-                System.out.printf("Edge %d:(%d, %d) cost:%d \n", i, next_edge.v1, next_edge.v2, next_edge.weight);
+
+                //System.out.printf("Edge %d:(%d, %d) cost:%d \n", i, next_edge.v1, next_edge.v2, next_edge.weight);
             }
         }
-        // print MSTweight
-        System.out.printf("Kruskal MSTweight = %d", MSTweight);
+    }
+
+    @Override
+    public void run(){
+        for (EdgeGraph eg: this.resultEdges) {
+            try {
+                edgeColoring(eg, this.color);
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Kruskal MST weight = " + this.smallWeight);
     }
 }
 

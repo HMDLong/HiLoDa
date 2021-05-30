@@ -1,6 +1,7 @@
 package sample;
 
 import com.jfoenix.controls.JFXToggleButton;
+import graphEngine.algos.AbstractAlgo;
 import graphEngine.algos.Dijsktra;
 import graphEngine.algos.Kruskal;
 import graphEngine.algos.Prim;
@@ -11,7 +12,6 @@ import graphEngine.graph.UndirectedGraph;
 import javafx.animation.FillTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
-import javafx.animation.StrokeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 
 public class MenuController implements Initializable {
@@ -256,19 +257,6 @@ public class MenuController implements Initializable {
             id.setLayoutY(y - 35);
         }
     }
-    //Handle run button
-    @FXML
-    public void runClick(){
-        System.out.println("Run");
-        //Extend...
-    }
-
-    //Handle step button
-    @FXML
-    public void stepClick(){
-        System.out.println("Step");
-        //Extend...
-    }
 
     //Handle clear button
     @FXML
@@ -327,6 +315,7 @@ public class MenuController implements Initializable {
     //Handle prim button
     @FXML
     public void primHandle(){
+        ClearColor();
         addNode = false;
         addEdge = false;
         addNodeButton.setDisable(true);
@@ -337,11 +326,14 @@ public class MenuController implements Initializable {
         stepButton.setDisable(false);
         addNodeButton.setSelected(false);
         addEdgeButton.setSelected(false);
+        context.setAlgo(new Prim());
+        context.setCount(-1);
     }
 
     //Handle kru button
     @FXML
     public void kruHandle(){
+        ClearColor();
         addNode = false;
         addEdge = false;
         addNodeButton.setDisable(true);
@@ -350,11 +342,14 @@ public class MenuController implements Initializable {
         dijkButton.setSelected(false);
         runButton.setDisable(false);
         stepButton.setDisable(false);
+        context.setAlgo(new Kruskal());
+        context.setCount(-1);
     }
 
     //Handle dijk button
     @FXML
     public void dijkHandle(){
+        ClearColor();
         addNode = false;
         addEdge = false;
         addNodeButton.setDisable(true);
@@ -363,5 +358,29 @@ public class MenuController implements Initializable {
         primButton.setSelected(false);
         runButton.setDisable(false);
         stepButton.setDisable(false);
+        context.setAlgo(new Dijsktra());
+        context.setCount(-1);
+    }
+
+    public void ClearColor(){
+        for (EdgeGraph eg: context.edgefx){
+            AbstractAlgo.edgeColoring(eg,Color.GRAY);
+        }
+    }
+
+    //Handle run button
+    @FXML
+    public void runClick(){
+        System.out.println("Run Automatically");
+        context.runAuto();
+    }
+
+    //Handle step button
+    @FXML
+    public void stepClick(){
+        System.out.println("Run Step By Step");
+        int temp = context.getCount();
+        context.setCount(temp + 1);
+        context.runStepByStep();
     }
 }
