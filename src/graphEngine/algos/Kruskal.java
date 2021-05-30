@@ -64,7 +64,6 @@ public class Kruskal extends AbstractAlgo{
         // start algorithm
         for (int i=0; i < graph.getVerticesSize();i++) {
             EdgeRecord next_edge = queue.poll();
-            assert next_edge != null;
             int x = find(subsets, next_edge.v1);
             int y = find(subsets, next_edge.v2);
 
