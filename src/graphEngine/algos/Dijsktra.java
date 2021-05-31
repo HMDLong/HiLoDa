@@ -1,7 +1,6 @@
 package graphEngine.algos;
 
 import graphEngine.utils.VertexDistRecord;
-import javafx.scene.paint.Color;
 import sample.EdgeGraph;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ import graphEngine.utils.Prompter;
 
 public class Dijsktra extends AbstractAlgo {
     private VertexDistRecord[] distTable;
-    public int start_vertex;
-    public int end_vertex;
+    private int start_vertex;
+    private int end_vertex;
 
     /** Methods **/
     public int getDistance(int id){
@@ -35,7 +34,6 @@ public class Dijsktra extends AbstractAlgo {
 
     @Override
     public List<EdgeGraph> init(){
-        //this.color = Color.LIGHTGREEN;
         List<EdgeGraph> resultEdges = new ArrayList<>();
         // prompt for start_vertex
         int start_id;
@@ -47,11 +45,6 @@ public class Dijsktra extends AbstractAlgo {
                 break;
         }
         if(start_id < 0) return null;
-        /*
-        do{
-            start_id = Prompter.askInt("Enter start id", "Dijsktra", null);
-        } while(!this.graph.getAdjacentMap().containsKey(start_id));
-        */
         this.start_vertex = start_id;
         // prompt for end_vertex
         int end_id = Prompter.askInt("Enter end id", "Dijsktra", "-1");
@@ -133,22 +126,4 @@ public class Dijsktra extends AbstractAlgo {
             }
         return path_to_string.toString();
     }
-
-    /*
-    @Override
-    public void run(){
-        for (EdgeGraph eg: this.resultEdges) {
-            try {
-                edgeColoring(eg,this.color);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        if(this.end_vertex >= 0)
-            System.out.printf("Dijkstra Shortest Distance from %d to %d is %d\n", this.start_vertex, this.end_vertex, this.distTable[this.end_vertex].weight);
-    }
-    */
-
-
 }

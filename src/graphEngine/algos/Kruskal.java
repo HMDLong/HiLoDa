@@ -44,7 +44,6 @@ public class Kruskal extends AbstractAlgo{
         List<EdgeGraph> resultEdges = new ArrayList<>();
         // graph check
         if(graph instanceof DirectedGraph) return null;
-        //this.color = Color.LIGHTSKYBLUE;
         // initialize the parent tables: using Disjoint-set / Set-Union algo to detect cycle
         Subsets[] subsets = new Subsets[graph.getVerticesSize()];
         // initialize the edges priority queue
@@ -89,20 +88,5 @@ public class Kruskal extends AbstractAlgo{
     public String resultToString(){
         return "Kruskal MST weight = " + this.mstWeight;
     }
-
-    /*
-    @Override
-    public void run(){
-        for (EdgeGraph eg: this.resultEdges) {
-            try {
-                edgeColoring(eg, this.color);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("Kruskal MST weight = " + this.smallWeight);
-    }
-    */
 }
 

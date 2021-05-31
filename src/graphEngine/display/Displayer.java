@@ -11,10 +11,9 @@ import java.util.List;
 
 public abstract class Displayer implements Runnable{
     protected List<EdgeGraph> resultEdges;
-    //protected List<EdgeGraph> edgefx;
     protected int count;
     protected Color color;
-    public AbstractAlgo algo;
+    protected AbstractAlgo algo;
 
     public void setCount(int new_count){
         this.count = new_count;
@@ -39,12 +38,6 @@ public abstract class Displayer implements Runnable{
     public void setEdgefx(List<EdgeGraph> edgefx) {
         this.algo.setEdgefx(edgefx);
     }
-
-    /*
-    public List<EdgeGraph> getEdgefx() {
-        return this.edgefx;
-    }
-     */
 
     public void setColor(Color color){
         this.color = color;
