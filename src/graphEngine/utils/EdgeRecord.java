@@ -16,6 +16,7 @@ public class EdgeRecord implements Comparable<EdgeRecord>{
         return this.weight - e.weight;
     }
 
+    @Override
     public boolean equals(Object o){
         if(o instanceof EdgeRecord){
             EdgeRecord e = (EdgeRecord) o;
@@ -24,6 +25,7 @@ public class EdgeRecord implements Comparable<EdgeRecord>{
         return false;
     }
 
+    @Override
     public String toString(){
         return this.v1 + "---" + this.v2 + "=" + this.weight;
     }

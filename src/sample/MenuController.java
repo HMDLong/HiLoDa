@@ -72,7 +72,7 @@ public class MenuController implements Initializable {
     public void initContext(){
         context = new Context();
         context.setGraph(makeGraph());
-        context.edgefx = new ArrayList<>();
+        context.setEdgefx(new ArrayList<>());
     }
 
     int nNode = 0;
@@ -115,7 +115,7 @@ public class MenuController implements Initializable {
                 tr.setInterpolator(Interpolator.EASE_OUT);
                 tr.play();
                 //Add node on tree graph
-                context.graph.addVertex(nNode);
+                context.getGraph().addVertex(nNode);
                 //Handle button
                 nNode++;
                 if(nNode >= 1){
@@ -135,7 +135,7 @@ public class MenuController implements Initializable {
 
     //Check exits edge
     boolean checkEdge(NodeFX source, NodeFX target){
-        return context.graph.getAdjacentMap().get(Integer.valueOf(source.node.name)).containsKey(Integer.valueOf(target.node.name));
+        return context.getGraph().getAdjacentMap().get(Integer.valueOf(source.node.name)).containsKey(Integer.valueOf(target.node.name));
     }
 
     //Add edge
@@ -173,10 +173,10 @@ public class MenuController implements Initializable {
                                     paneGroup.getChildren().add(edgeLine);
 
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
-                                    context.edgefx.add(temp);
-                                    context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
+                                    context.getEdgefx().add(temp);
+                                    context.getGraph().addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     // to check treemap on console
-                                    context.graph.print();
+                                    context.getGraph().print();
                                 }
                             }else if(direct){
                                 // Prompt weight
@@ -199,12 +199,12 @@ public class MenuController implements Initializable {
                                     paneGroup.getChildren().add(arrow);
 
                                     //Add edge to arraylist
-                                    context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
+                                    context.getGraph().addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), arrow, weight);
                                     //edges.add(temp);
-                                    context.edgefx.add(temp);
+                                    context.getEdgefx().add(temp);
                                     //To check treemap on console
-                                    context.graph.print();
+                                    context.getGraph().print();
                                 }
                             }
                             if (addNode || addEdge) {
@@ -233,7 +233,6 @@ public class MenuController implements Initializable {
             }
             FillTransition ft = new FillTransition(Duration.millis(300), circle, Color.GRAY, Color.RED);
             ft.play();
-
         }
     };
 
@@ -267,7 +266,7 @@ public class MenuController implements Initializable {
     public void ClearColor(){
         try {
             for (EdgeGraph eg : context.getResultEdges()) {
-                context.displayer.resetEdgeColor(eg);
+                context.getDisplayer().resetEdgeColor(eg);
             }
         } catch(NullPointerException e) {
             System.out.println("Nothing to clear :/");
@@ -342,11 +341,9 @@ public class MenuController implements Initializable {
             addNodeButton.setSelected(false);
             addEdgeButton.setSelected(false);
             context.setup(new PrimDisplayFactory());
-            //context.setup(new Prim());
-            //context.setAlgo(new Prim());
-            //context.setCount(-1);
         } catch (Exception e){
             System.out.println("Error occurred");
+            e.printStackTrace();
             setButtonOnError();
         }
     }
@@ -401,6 +398,7 @@ public class MenuController implements Initializable {
             context.runAuto();
         } catch (Exception e){
             System.out.println("Error occurred");
+            e.printStackTrace();
             setButtonOnError();
         }
     }
@@ -413,6 +411,7 @@ public class MenuController implements Initializable {
             context.runStepByStep();
         } catch (Exception e){
             System.out.println("Error occurred");
+            e.printStackTrace();
             setButtonOnError();
         }
     }

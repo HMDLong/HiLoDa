@@ -56,20 +56,6 @@ public class Prim extends AbstractAlgo {
         return resultEdges;
     }
 
-    /*
-    public void run() {
-        for (EdgeGraph eg: this.resultEdges) {
-            try{
-                edgeColoring(eg,this.color);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("Prim MST weight = " + this.smallWeight);
-    }
-    */
-
     @Override
     public String resultToString(){
         return "Prim MST weight = " + this.mstWeight;
