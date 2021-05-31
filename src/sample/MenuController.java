@@ -42,9 +42,9 @@ public class MenuController implements Initializable {
     @FXML
     private Group paneGroup;
     @FXML
-    private Button backButton, clearButton, runButton, stepButton;
+    private Button backButton, clearButton, runButton, stepButton, primButton, kruButton, dijkButton;
     @FXML
-    private JFXToggleButton primButton, kruButton, dijkButton, addEdgeButton, addNodeButton;
+    private JFXToggleButton addEdgeButton, addNodeButton;
     @FXML
     private Line edgeLine;
     @FXML
@@ -256,12 +256,6 @@ public class MenuController implements Initializable {
         }
     }
 
-    public void setButtonOnError(){
-        kruButton.setSelected(false);
-        dijkButton.setSelected(false);
-        primButton.setSelected(false);
-    }
-
     //Clear current visualized edges when switch mode
     public void ClearColor(){
         try {
@@ -290,9 +284,6 @@ public class MenuController implements Initializable {
         primButton.setDisable(true);
         kruButton.setDisable(true);
         dijkButton.setDisable(true);
-        primButton.setSelected(false);
-        kruButton.setSelected(false);
-        dijkButton.setSelected(false);
         runButton.setDisable(true);
         stepButton.setDisable(true);
         nNode = 0;
@@ -332,10 +323,8 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            addNodeButton.setDisable(true);
-            addEdgeButton.setDisable(true);
-            kruButton.setSelected(false);
-            dijkButton.setSelected(false);
+            //addNodeButton.setDisable(true);
+            //addEdgeButton.setDisable(true);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             addNodeButton.setSelected(false);
@@ -344,7 +333,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 
@@ -355,18 +343,15 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            addNodeButton.setDisable(true);
+            //addNodeButton.setDisable(true);
             addNodeButton.setSelected(false);
-            addEdgeButton.setDisable(true);
+            //addEdgeButton.setDisable(true);
             addEdgeButton.setSelected(false);
-            primButton.setSelected(false);
-            dijkButton.setSelected(false);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             context.setup(new KruskalDisplayFactory());
         } catch (Exception e){
             System.out.println("Error occurred");
-            setButtonOnError();
         }
     }
 
@@ -377,16 +362,13 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            addNodeButton.setDisable(true);
-            addEdgeButton.setDisable(true);
-            kruButton.setSelected(false);
-            primButton.setSelected(false);
+            //addNodeButton.setDisable(true);
+            //addEdgeButton.setDisable(true);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             context.setup(new DijsktraDisplayFactory());
         } catch (Exception e){
             System.out.println("Error occurred");
-            setButtonOnError();
         }
     }
 
@@ -399,7 +381,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 
@@ -412,7 +393,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 }
