@@ -1,16 +1,20 @@
 package graphEngine.algos;
 
-import graphEngine.graph.TreeMapGraph;
 import graphEngine.utils.VertexDistRecord;
+import javafx.scene.paint.Color;
+import sample.EdgeGraph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.List;
 import java.util.PriorityQueue;
+import graphEngine.utils.Prompter;
 
-public class Dijsktra implements AbstractAlgo {
+public class Dijsktra extends AbstractAlgo {
     private VertexDistRecord[] distTable;
     public int start_vertex;
+    public int end_vertex;
 
     /** Methods **/
     public int getDistance(int id){
@@ -21,10 +25,37 @@ public class Dijsktra implements AbstractAlgo {
         return this.distTable;
     }
 
+    public void setStart(int start_id){
+        this.start_vertex = start_id;
+    }
+
+    public void setEnd(int end_id){
+        this.end_vertex = end_id;
+    }
+
     @Override
-    public void run(TreeMapGraph graph){
-        /* prompt for start_vertex here */
-        this.start_vertex = 0;
+    public List<EdgeGraph> init(){
+        //this.color = Color.LIGHTGREEN;
+        List<EdgeGraph> resultEdges = new ArrayList<>();
+        // prompt for start_vertex
+        int start_id;
+        while(true){
+            start_id = Prompter.askInt("Enter start id", "Dijsktra", null);
+            if(start_id < 0)
+                break;
+            if(this.graph.getAdjacentMap().containsKey(start_id))
+                break;
+        }
+        if(start_id < 0) return null;
+        /*
+        do{
+            start_id = Prompter.askInt("Enter start id", "Dijsktra", null);
+        } while(!this.graph.getAdjacentMap().containsKey(start_id));
+        */
+        this.start_vertex = start_id;
+        // prompt for end_vertex
+        int end_id = Prompter.askInt("Enter end id", "Dijsktra", "-1");
+        this.end_vertex = end_id;
 
         // adapting
         this.distTable = new VertexDistRecord[graph.getAdjacentMap().size()];
@@ -54,9 +85,21 @@ public class Dijsktra implements AbstractAlgo {
                 }
             }
 
+            String begin = String.valueOf(record.vertex_id);
+            String end = String.valueOf(this.distTable[record.vertex_id].vertex_id);
+            for(EdgeGraph eg: this.edgefx) {
+                if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
+                        (eg.s1.name.equals(end) && eg.s2.name.equals(begin))) {
+                    resultEdges.add(eg);
+                }
+            }
+
+            if(record.vertex_id == this.end_vertex)
+                return resultEdges;
             /* Visualization code here */
-            System.out.println(this.distTable[record.vertex_id].vertex_id + "--->" + record.vertex_id + " = " + record.weight);
+            //System.out.println(this.distTable[record.vertex_id].vertex_id + "--->" + record.vertex_id + " = " + record.weight);
         }
+        return resultEdges;
     }
 
     public ArrayList<Integer> getPath(int end_vertex){
@@ -72,20 +115,40 @@ public class Dijsktra implements AbstractAlgo {
         return path;
     }
 
-    public void printPaths(){
-        System.out.printf("From %d to", this.start_vertex);
+    // Get the final result string here
+    @Override
+    public String resultToString(){
+        StringBuilder path_to_string = new StringBuilder(String.format("From %d to\n", this.start_vertex));
         for(int end_vertex = 0; end_vertex < this.distTable.length; end_vertex++)
             if(end_vertex != this.start_vertex) {
                 ArrayList<Integer> path = getPath(end_vertex);
                 if (path == null)
                     System.out.println(end_vertex + ": Unreachable");
                 else {
-                    StringBuilder path_to_string = new StringBuilder(end_vertex + ": " + path.get(path.size() - 1));
+                    path_to_string.append(end_vertex + ": " + path.get(path.size() - 1));
                     for (int i = path.size() - 2; i >= 0; i--)
                         path_to_string.append("--->").append(path.get(i));
-                    path_to_string.append(" = ").append(this.distTable[end_vertex].weight);
-                    System.out.println(path_to_string);
+                    path_to_string.append(" = ").append(this.distTable[end_vertex].weight).append("\n");
                 }
             }
+        return path_to_string.toString();
     }
+
+    /*
+    @Override
+    public void run(){
+        for (EdgeGraph eg: this.resultEdges) {
+            try {
+                edgeColoring(eg,this.color);
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.end_vertex >= 0)
+            System.out.printf("Dijkstra Shortest Distance from %d to %d is %d\n", this.start_vertex, this.end_vertex, this.distTable[this.end_vertex].weight);
+    }
+    */
+
+
 }

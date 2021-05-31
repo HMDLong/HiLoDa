@@ -12,17 +12,17 @@
    <children>
       <AnchorPane fx:id="panel" layoutY="-14.0" maxHeight="600.0" maxWidth="1035.0" minHeight="600.0" minWidth="1035.0" prefHeight="600.0" prefWidth="1035.0" style="-fx-background-color: #3b5998;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
          <children>
-            <Button fx:id="cButton" layoutX="473.0" layoutY="424.0" mnemonicParsing="false" onAction="#click" prefHeight="38.0" prefWidth="86.0" text="Continue" textFill="#141414" />
-            <Label layoutX="302.0" layoutY="147.0" prefHeight="48.0" prefWidth="450.0" text="Select Graph Properties" textFill="#dfe4ea" AnchorPane.topAnchor="147.0">
+            <Button fx:id="cButton" layoutX="490.0" layoutY="506.0" mnemonicParsing="false" onAction="#click" prefHeight="38.0" prefWidth="86.0" text="Continue" textFill="#141414" />
+            <Label layoutX="419.0" layoutY="310.0" prefHeight="48.0" prefWidth="468.0" text="Select Graph Properties" textFill="LIME" AnchorPane.topAnchor="310.0">
                <font>
-                  <Font name="Signika Regular" size="37.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <VBox layoutX="444.0" layoutY="268.0" prefHeight="88.0" prefWidth="173.0" spacing="30.0">
+            <VBox layoutX="463.0" layoutY="378.0" prefHeight="88.0" prefWidth="173.0" spacing="30.0">
                <children>
                   <JFXRadioButton fx:id="dButton" prefHeight="34.0" prefWidth="161.0" text="Directed" textFill="#dfe4ea">
                      <font>
-                        <Font name="Aller" size="19.0" />
+                        <Font size="16.0" />
                      </font>
                      <toggleGroup>
                         <ToggleGroup fx:id="direction" />
@@ -30,16 +30,35 @@
                   </JFXRadioButton>
                   <JFXRadioButton fx:id="udButton" text="Undirected" textFill="#dfe4ea" toggleGroup="$direction">
                      <font>
-                        <Font name="Aller" size="19.0" />
+                        <Font size="16.0" />
                      </font>
                   </JFXRadioButton>
                </children>
             </VBox>
-            <Label layoutX="42.0" layoutY="45.0" prefHeight="48.0" prefWidth="161.0" text="HiLoDa Team" textFill="#e8e00a">
+            <Label layoutX="416.0" layoutY="51.0" prefHeight="48.0" prefWidth="248.0" text="HiLoDa Team" textAlignment="CENTER" textFill="#e8e00a">
                <font>
-                  <Font size="22.0" />
+                  <Font size="36.0" />
                </font>
             </Label>
+            <VBox alignment="TOP_CENTER" layoutX="358.0" layoutY="139.0" prefHeight="88.0" prefWidth="346.0" spacing="30.0">
+               <children>
+                  <Label text="Tran Duc Hieu - 20184104" textFill="#dfe4ea">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label text="Hoang Mai Duc Long - 20184136" textAlignment="CENTER" textFill="#dfe4ea">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label text="Vu Tuan Dat - 20184067" textFill="#dfe4ea">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
             <!--<JFXButton fx:id="panel1Next" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" disable="true" layoutX="676.0" layoutY="416.0" prefHeight="31.0" prefWidth="55.0" ripplerFill="WHITE" AnchorPane.bottomAnchor="73.0" AnchorPane.rightAnchor="69.0">
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">

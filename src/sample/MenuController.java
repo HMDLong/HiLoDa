@@ -1,7 +1,14 @@
 package sample;
 
 import com.jfoenix.controls.JFXToggleButton;
+import graphEngine.algos.AbstractAlgo;
+import graphEngine.algos.Dijsktra;
+import graphEngine.algos.Kruskal;
+import graphEngine.algos.Prim;
 import graphEngine.context.Context;
+import graphEngine.factory.DijsktraDisplayFactory;
+import graphEngine.factory.KruskalDisplayFactory;
+import graphEngine.factory.PrimDisplayFactory;
 import graphEngine.graph.DirectedGraph;
 import graphEngine.graph.TreeMapGraph;
 import graphEngine.graph.UndirectedGraph;
@@ -31,12 +38,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
 public class MenuController implements Initializable {
     @FXML
     private Group paneGroup;
     @FXML
-    private Button backButton, clearButton;
+    private Button backButton, clearButton, runButton, stepButton;
     @FXML
     private JFXToggleButton primButton, kruButton, dijkButton, addEdgeButton, addNodeButton;
     @FXML
@@ -52,12 +58,11 @@ public class MenuController implements Initializable {
 
     // List node graph
     List<NodeFX> nodes = new ArrayList<>();
-    // List edge graph
-    List<EdgeGraph> edges = new ArrayList<>();
     // Context
     Context context;
 
-    private boolean direct = MainController.directed, undirect = MainController.undirected;
+    private final boolean direct = MainController.directed;
+    private final boolean undirect = MainController.undirected;
 
     public TreeMapGraph makeGraph(){
         if(direct) return new DirectedGraph();
@@ -67,6 +72,7 @@ public class MenuController implements Initializable {
     public void initContext(){
         context = new Context();
         context.setGraph(makeGraph());
+        context.edgefx = new ArrayList<>();
     }
 
     int nNode = 0;
@@ -79,6 +85,8 @@ public class MenuController implements Initializable {
         addNodeButton.setSelected(true);
         addNodeButton.setDisable(false);
         clearButton.setDisable(true);
+        runButton.setDisable(true);
+        stepButton.setDisable(true);
         initContext();
         System.out.println("Init success");
     }
@@ -127,13 +135,6 @@ public class MenuController implements Initializable {
 
     //Check exits edge
     boolean checkEdge(NodeFX source, NodeFX target){
-        /*
-        for(EdgeGraph e: edges){
-            if((e.s1 == source.node && e.s2 == target.node) || (source.node == target.node) )
-                return true;
-        }
-        return false;
-         */
         return context.graph.getAdjacentMap().get(Integer.valueOf(source.node.name)).containsKey(Integer.valueOf(target.node.name));
     }
 
@@ -160,22 +161,19 @@ public class MenuController implements Initializable {
                                 if (result.isPresent()) {
                                     // Set up visual edge
                                     weight.setText(result.get());
+                                    weight.setStyle("-fx-font-family: Courier; -fx-font-size: 14pt");
+                                    weight.setTextFill(Color.ROYALBLUE);
                                     weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
                                     weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
                                     paneGroup.getChildren().add(weight);
 
                                     edgeLine = new Line(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
                                     edgeLine.setId("Line");
+                                    edgeLine.setStyle("-fx-stroke-width: 4; -fx-opacity: 0.6;");
                                     paneGroup.getChildren().add(edgeLine);
-                                    /*
-                                    //Add edge to arraylist
+
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Integer.valueOf(weight.getText()), edgeLine, weight);
-                                    selectedNode.node.adjacents.add(new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                    circle.node.adjacents.add(new EdgeGraph(circle.node, selectedNode.node, Double.valueOf(weight.getText()), edgeLine, weight));
-                                    edges.add(selectedNode.node.adjacents.get(selectedNode.node.adjacents.size() - 1));
-                                    edges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
-                                    // ^
-                                     */
+                                    context.edgefx.add(temp);
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     // to check treemap on console
                                     context.graph.print();
@@ -190,18 +188,21 @@ public class MenuController implements Initializable {
                                 if (result.isPresent()) {
                                     // Set up visual edge
                                     weight.setText(result.get());
+                                    weight.toFront();
                                     weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
                                     weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
                                     paneGroup.getChildren().add(weight);
 
                                     arrow = new ArrowGraph(selectedNode.point.x, selectedNode.point.y, circle.point.x, circle.point.y);
                                     arrow.setId("arrow");
+                                    arrow.setStyle("-fx-stroke-width: 4; -fx-opacity: 0.6;");
                                     paneGroup.getChildren().add(arrow);
 
                                     //Add edge to arraylist
                                     context.graph.addEdge(Integer.valueOf(selectedNode.node.name), Integer.valueOf(circle.node.name), Integer.valueOf(weight.getText()));
                                     temp = new EdgeGraph(selectedNode.node, circle.node, Double.valueOf(weight.getText()), arrow, weight);
-                                    edges.add(temp);
+                                    //edges.add(temp);
+                                    context.edgefx.add(temp);
                                     //To check treemap on console
                                     context.graph.print();
                                 }
@@ -248,8 +249,29 @@ public class MenuController implements Initializable {
             node = new NodeGraph(name,this);
             setFill(Color.GRAY);
             id = new Label(name);
+            id.setTextFill(Color.BLACK);
             id.setLayoutX(x - 5);
             id.setLayoutY(y - 35);
+            id.toFront();
+            id.setStyle("-fx-font-family: Courier; -fx-font-size: 14pt");
+        }
+    }
+
+    public void setButtonOnError(){
+        kruButton.setSelected(false);
+        dijkButton.setSelected(false);
+        primButton.setSelected(false);
+    }
+
+    //Clear current visualized edges when switch mode
+    public void ClearColor(){
+        try {
+            for (EdgeGraph eg : context.getResultEdges()) {
+                context.displayer.resetEdgeColor(eg);
+            }
+        } catch(NullPointerException e) {
+            System.out.println("Nothing to clear :/");
+            return;
         }
     }
 
@@ -259,7 +281,6 @@ public class MenuController implements Initializable {
         System.out.println("Clear");
         paneGroup.getChildren().clear();
         paneGroup.getChildren().addAll(viewer);
-        //nodes = new ArrayList<>();
         addNode = true;
         addEdge = false;
         selectedNode = null;
@@ -270,19 +291,22 @@ public class MenuController implements Initializable {
         primButton.setDisable(true);
         kruButton.setDisable(true);
         dijkButton.setDisable(true);
+        primButton.setSelected(false);
+        kruButton.setSelected(false);
+        dijkButton.setSelected(false);
+        runButton.setDisable(true);
+        stepButton.setDisable(true);
         nNode = 0;
-        context.setGraph(makeGraph());
+        context.clear(makeGraph());
     }
+
     //Handle back button
     @FXML
     public void backClick(ActionEvent actionEvent){
-        /*Stage newHome = new Stage();
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
-        newHome.setScene(new Scene(anchorPane));
-        newHome.show();*/
         MainController.menu.hide();
         Main.home.show();
     }
+
     //Handle addEdge button
     @FXML
     public void addEdgeHandle() {
@@ -300,5 +324,96 @@ public class MenuController implements Initializable {
         addEdge = false;
         addNodeButton.setSelected(true);
         addEdgeButton.setSelected(false);
+    }
+
+    //Handle prim button
+    @FXML
+    public void primHandle(){
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setSelected(false);
+            dijkButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            addNodeButton.setSelected(false);
+            addEdgeButton.setSelected(false);
+            context.setup(new PrimDisplayFactory());
+            //context.setup(new Prim());
+            //context.setAlgo(new Prim());
+            //context.setCount(-1);
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
+    }
+
+    //Handle kru button
+    @FXML
+    public void kruHandle(){
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addNodeButton.setSelected(false);
+            addEdgeButton.setDisable(true);
+            addEdgeButton.setSelected(false);
+            primButton.setSelected(false);
+            dijkButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            context.setup(new KruskalDisplayFactory());
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
+    }
+
+    //Handle dijk button
+    @FXML
+    public void dijkHandle(){
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setSelected(false);
+            primButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            context.setup(new DijsktraDisplayFactory());
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
+    }
+
+    //Handle run button
+    @FXML
+    public void runClick(){
+        System.out.println("Run Automatically");
+        try {
+            context.runAuto();
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
+    }
+
+    //Handle step button
+    @FXML
+    public void stepClick(){
+        System.out.println("Run Step By Step");
+        try {
+            context.runStepByStep();
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
     }
 }

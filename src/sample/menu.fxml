@@ -28,19 +28,19 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <VBox layoutY="98.0" prefHeight="200.0" prefWidth="200.0">
+                  <VBox layoutY="82.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <JFXToggleButton fx:id="primButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Prim" textFill="#fffbfb">
+                        <JFXToggleButton fx:id="primButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#primHandle" text="Prim" textFill="#fffbfb">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXToggleButton fx:id="kruButton" minWidth="-Infinity" text="Kruskal" textFill="WHITE">
+                        <JFXToggleButton fx:id="kruButton" minWidth="-Infinity" onAction="#kruHandle" text="Kruskal" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </JFXToggleButton>
-                        <JFXToggleButton fx:id="dijkButton" text="Dijkstra" textFill="WHITE">
+                        <JFXToggleButton fx:id="dijkButton" onAction="#dijkHandle" text="Dijkstra" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -55,18 +55,28 @@
                         <Font name="Jamrul" size="13.0" />
                      </font>
                   </Button>
-                  <JFXToggleButton fx:id="addNodeButton" layoutX="19.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#addNodeHandle" text="Add Node" textFill="WHITE">
+                  <JFXToggleButton fx:id="addNodeButton" layoutX="19.0" layoutY="380.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#addNodeHandle" text="Add Node" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </JFXToggleButton>
                   <Line endX="90.0" layoutX="99.0" layoutY="70.0" startX="-90.0" stroke="#e4e4e1" />
-                  <Line endX="90.0" layoutX="98.0" layoutY="317.0" startX="-90.0" stroke="#e4e4e1" />
-                  <JFXToggleButton fx:id="addEdgeButton" layoutX="19.0" layoutY="402.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#addEdgeHandle" text="Add Edge" textFill="WHITE">
+                  <Line endX="90.0" layoutX="98.0" layoutY="354.0" startX="-90.0" stroke="#e4e4e1" />
+                  <JFXToggleButton fx:id="addEdgeButton" layoutX="19.0" layoutY="440.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#addEdgeHandle" text="Add Edge" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </JFXToggleButton>
+                  <Button fx:id="stepButton" layoutX="105.0" layoutY="291.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stepClick" prefHeight="28.0" prefWidth="69.0" text="STEP">
+                     <font>
+                        <Font name="Jamrul" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="runButton" layoutX="17.0" layoutY="291.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runClick" prefHeight="28.0" prefWidth="69.0" text="RUN">
+                     <font>
+                        <Font name="Jamrul" size="13.0" />
+                     </font>
+                  </Button>
                     </children>
                 </AnchorPane>
             <Group fx:id="paneGroup" layoutX="200.0" onMouseClicked="#handle" onMousePressed="#handle" onMouseReleased="#handle">
