@@ -2,21 +2,20 @@ package graphEngine.algos;
 
 import graphEngine.graph.DirectedGraph;
 import graphEngine.utils.VertexDistRecord;
-import javafx.scene.paint.Color;
 import sample.EdgeGraph;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
-public class Prim extends AbstractAlgo implements Runnable {
+public class Prim extends AbstractAlgo {
     private VertexDistRecord[] distTable;
+    private int mstWeight = 0;
 
     @Override
-    public void init() {
+    public List<EdgeGraph> init() {
+        List<EdgeGraph> resultEdges = new ArrayList<>();
         // check graph
-        if (this.graph instanceof DirectedGraph) return;
-        this.color = Color.CORAL;
+        if (this.graph instanceof DirectedGraph) return null;
+        //this.color = Color.CORAL;
         // adapting
         this.distTable = new VertexDistRecord[graph.getAdjacentMap().size()];
 
@@ -43,20 +42,21 @@ public class Prim extends AbstractAlgo implements Runnable {
                     queue.add(new VertexDistRecord(entry.getKey(), entry.getValue()));
                 }
             }
-            this.smallWeight += record.weight;
+            this.mstWeight += record.weight;
 
             String begin = String.valueOf(this.distTable[record.vertex_id].vertex_id);
             String end = String.valueOf(record.vertex_id);
             for (EdgeGraph eg : edgefx) {
                 if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
                         (eg.s1.name.equals(end) && eg.s2.name.equals(begin))) {
-                    this.resultEdges.add(eg);
+                    resultEdges.add(eg);
                 }
             }
         }
+        return resultEdges;
     }
 
-    @Override
+    /*
     public void run() {
         for (EdgeGraph eg: this.resultEdges) {
             try{
@@ -67,5 +67,11 @@ public class Prim extends AbstractAlgo implements Runnable {
             }
         }
         System.out.println("Prim MST weight = " + this.smallWeight);
+    }
+    */
+
+    @Override
+    public String resultToString(){
+        return "Prim MST weight = " + this.mstWeight;
     }
 }

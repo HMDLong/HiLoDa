@@ -23,7 +23,7 @@ public class Prompter {
                 return askIntAgain(content, title, defaultVal);
             }
         }
-        return -1;
+        else return -1;
     }
 
     static private int askIntAgain(String content, String title, String defaultVal){
@@ -36,6 +36,6 @@ public class Prompter {
                 return askIntAgain(content, title, defaultVal);
             }
         }
-        return -1;
+        else return -1;
     }
 }

@@ -6,6 +6,9 @@ import graphEngine.algos.Dijsktra;
 import graphEngine.algos.Kruskal;
 import graphEngine.algos.Prim;
 import graphEngine.context.Context;
+import graphEngine.factory.DijsktraDisplayFactory;
+import graphEngine.factory.KruskalDisplayFactory;
+import graphEngine.factory.PrimDisplayFactory;
 import graphEngine.graph.DirectedGraph;
 import graphEngine.graph.TreeMapGraph;
 import graphEngine.graph.UndirectedGraph;
@@ -34,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-
 
 public class MenuController implements Initializable {
     @FXML
@@ -160,6 +161,8 @@ public class MenuController implements Initializable {
                                 if (result.isPresent()) {
                                     // Set up visual edge
                                     weight.setText(result.get());
+                                    weight.setStyle("-fx-font-family: Courier; -fx-font-size: 14pt");
+                                    weight.setTextFill(Color.ROYALBLUE);
                                     weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
                                     weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
                                     paneGroup.getChildren().add(weight);
@@ -185,6 +188,7 @@ public class MenuController implements Initializable {
                                 if (result.isPresent()) {
                                     // Set up visual edge
                                     weight.setText(result.get());
+                                    weight.toFront();
                                     weight.setLayoutX(((selectedNode.point.x) + (circle.point.x)) / 2);
                                     weight.setLayoutY(((selectedNode.point.y) + (circle.point.y)) / 2);
                                     paneGroup.getChildren().add(weight);
@@ -245,8 +249,29 @@ public class MenuController implements Initializable {
             node = new NodeGraph(name,this);
             setFill(Color.GRAY);
             id = new Label(name);
+            id.setTextFill(Color.BLACK);
             id.setLayoutX(x - 5);
             id.setLayoutY(y - 35);
+            id.toFront();
+            id.setStyle("-fx-font-family: Courier; -fx-font-size: 14pt");
+        }
+    }
+
+    public void setButtonOnError(){
+        kruButton.setSelected(false);
+        dijkButton.setSelected(false);
+        primButton.setSelected(false);
+    }
+
+    //Clear current visualized edges when switch mode
+    public void ClearColor(){
+        try {
+            for (EdgeGraph eg : context.getResultEdges()) {
+                context.displayer.resetEdgeColor(eg);
+            }
+        } catch(NullPointerException e) {
+            System.out.println("Nothing to clear :/");
+            return;
         }
     }
 
@@ -272,7 +297,7 @@ public class MenuController implements Initializable {
         runButton.setDisable(true);
         stepButton.setDisable(true);
         nNode = 0;
-        context.setGraph(makeGraph());
+        context.clear(makeGraph());
     }
 
     //Handle back button
@@ -304,57 +329,67 @@ public class MenuController implements Initializable {
     //Handle prim button
     @FXML
     public void primHandle(){
-        ClearColor();
-        addNode = false;
-        addEdge = false;
-        addNodeButton.setDisable(true);
-        addEdgeButton.setDisable(true);
-        kruButton.setSelected(false);
-        dijkButton.setSelected(false);
-        runButton.setDisable(false);
-        stepButton.setDisable(false);
-        addNodeButton.setSelected(false);
-        addEdgeButton.setSelected(false);
-        context.setup(new Prim());
-        //context.setAlgo(new Prim());
-        //context.setCount(-1);
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setSelected(false);
+            dijkButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            addNodeButton.setSelected(false);
+            addEdgeButton.setSelected(false);
+            context.setup(new PrimDisplayFactory());
+            //context.setup(new Prim());
+            //context.setAlgo(new Prim());
+            //context.setCount(-1);
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
     }
 
     //Handle kru button
     @FXML
     public void kruHandle(){
-        ClearColor();
-        addNode = false;
-        addEdge = false;
-        addNodeButton.setDisable(true);
-        addNodeButton.setSelected(false);
-        addEdgeButton.setDisable(true);
-        addEdgeButton.setSelected(false);
-        primButton.setSelected(false);
-        dijkButton.setSelected(false);
-        runButton.setDisable(false);
-        stepButton.setDisable(false);
-        context.setup(new Kruskal());
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addNodeButton.setSelected(false);
+            addEdgeButton.setDisable(true);
+            addEdgeButton.setSelected(false);
+            primButton.setSelected(false);
+            dijkButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            context.setup(new KruskalDisplayFactory());
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
     }
 
     //Handle dijk button
     @FXML
     public void dijkHandle(){
-        ClearColor();
-        addNode = false;
-        addEdge = false;
-        addNodeButton.setDisable(true);
-        addEdgeButton.setDisable(true);
-        kruButton.setSelected(false);
-        primButton.setSelected(false);
-        runButton.setDisable(false);
-        stepButton.setDisable(false);
-        context.setup(new Dijsktra());
-    }
-
-    public void ClearColor(){
-        for (EdgeGraph eg: context.edgefx){
-            AbstractAlgo.edgeColoring(eg,Color.GRAY);
+        try {
+            ClearColor();
+            addNode = false;
+            addEdge = false;
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setSelected(false);
+            primButton.setSelected(false);
+            runButton.setDisable(false);
+            stepButton.setDisable(false);
+            context.setup(new DijsktraDisplayFactory());
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
         }
     }
 
@@ -362,13 +397,23 @@ public class MenuController implements Initializable {
     @FXML
     public void runClick(){
         System.out.println("Run Automatically");
-        context.runAuto();
+        try {
+            context.runAuto();
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
     }
 
     //Handle step button
     @FXML
     public void stepClick(){
         System.out.println("Run Step By Step");
-        context.runStepByStep();
+        try {
+            context.runStepByStep();
+        } catch (Exception e){
+            System.out.println("Error occurred");
+            setButtonOnError();
+        }
     }
 }

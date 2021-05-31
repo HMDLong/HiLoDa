@@ -5,11 +5,10 @@ import graphEngine.utils.EdgeRecord;
 import javafx.scene.paint.Color;
 import sample.EdgeGraph;
 
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Kruskal extends AbstractAlgo{
+    private int mstWeight = 0;
 
     static class Subsets{
         int parent,rank;
@@ -41,18 +40,19 @@ public class Kruskal extends AbstractAlgo{
     }
 
     @Override
-    public void init(){
+    public List<EdgeGraph> init(){
+        List<EdgeGraph> resultEdges = new ArrayList<>();
         // graph check
-        if(graph instanceof DirectedGraph) return;
-        this.color = Color.LIGHTSKYBLUE;
+        if(graph instanceof DirectedGraph) return null;
+        //this.color = Color.LIGHTSKYBLUE;
         // initialize the parent tables: using Disjoint-set / Set-Union algo to detect cycle
         Subsets[] subsets = new Subsets[graph.getVerticesSize()];
         // initialize the edges priority queue
         PriorityQueue<EdgeRecord> queue = new PriorityQueue<>();
-        for(Map.Entry<Integer, TreeMap<Integer, Integer>> src : graph.getAdjacentMap().entrySet())
-            for(Map.Entry<Integer, Integer> dest : src.getValue().entrySet()){
+        for (Map.Entry<Integer, TreeMap<Integer, Integer>> src : graph.getAdjacentMap().entrySet())
+            for (Map.Entry<Integer, Integer> dest : src.getValue().entrySet()) {
                 EdgeRecord edge = new EdgeRecord(src.getKey(), dest.getKey(), dest.getValue());
-                if(queue.contains(edge)) edge = null;
+                if (queue.contains(edge)) edge = null;
                 else queue.add(edge);
             }
         // Create V subsets with single elements
@@ -62,7 +62,7 @@ public class Kruskal extends AbstractAlgo{
             subsets[v].rank = 0;
         }
         // start algorithm
-        for (int i=0; i < graph.getVerticesSize();i++) {
+        for (int i = 0; i < graph.getVerticesSize(); i++) {
             EdgeRecord next_edge = queue.poll();
             int x = find(subsets, next_edge.v1);
             int y = find(subsets, next_edge.v2);
@@ -70,20 +70,27 @@ public class Kruskal extends AbstractAlgo{
             //No cycle --> add
             if (x != y) {
                 Union(subsets, x, y);
-                this.smallWeight += next_edge.weight;
+                this.mstWeight += next_edge.weight;
 
                 String begin = String.valueOf(next_edge.v1);
                 String end = String.valueOf(next_edge.v2);
-                for(EdgeGraph eg: this.edgefx){
+                for (EdgeGraph eg : this.edgefx) {
                     if ((eg.s1.name.equals(begin) && eg.s2.name.equals(end)) ||
-                            (eg.s1.name.equals(end) && eg.s2.name.equals(begin))){
-                        this.resultEdges.add(eg);
+                            (eg.s1.name.equals(end) && eg.s2.name.equals(begin))) {
+                        resultEdges.add(eg);
                     }
                 }
             }
         }
+        return resultEdges;
     }
 
+    @Override
+    public String resultToString(){
+        return "Kruskal MST weight = " + this.mstWeight;
+    }
+
+    /*
     @Override
     public void run(){
         for (EdgeGraph eg: this.resultEdges) {
@@ -96,5 +103,6 @@ public class Kruskal extends AbstractAlgo{
         }
         System.out.println("Kruskal MST weight = " + this.smallWeight);
     }
+    */
 }
 
