@@ -1,0 +1,21 @@
+.normalVertex{
+    -fx-background-color: white;
+    -fx-font-size: 10;
+    -fx-fond-weight: bold;
+    -fx-background-radius: 35px;
+    -fx-border-radius: 35px;
+    -fx-border-color: black;
+    -fx-border-weight: 2px;
+    -fx-min-width: 30px;
+    -fx-max-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+}
+
+.vertexEntered{
+    -fx-background-color: yellow;
+}
+
+.someStyle{
+    -fx-background-color: lightblue;
+}
