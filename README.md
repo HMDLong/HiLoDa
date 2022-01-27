@@ -20,4 +20,9 @@
 
 ### Some images about this mini-project
 
-
+<p align="center">
+  <img src="https://github.com/HMDLong/HiLoDa_OOP/blob/main/image/start.png" width="500" />
+  <img src="https://github.com/HMDLong/HiLoDa_OOP/blob/main/image/input_weight.png" width="500" />
+  <img src="https://github.com/HMDLong/HiLoDa_OOP/blob/main/image/prim_algorithm.png" width="500" />
+  <img src="https://github.com/HMDLong/HiLoDa_OOP/blob/main/image/dijkstra_algorithm.png" width="500" />
+</p>
