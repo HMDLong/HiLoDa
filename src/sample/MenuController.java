@@ -341,7 +341,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 
@@ -352,9 +351,9 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            addNodeButton.setDisable(true);
+            //addNodeButton.setDisable(true);
             addNodeButton.setSelected(false);
-            addEdgeButton.setDisable(true);
+            //addEdgeButton.setDisable(true);
             addEdgeButton.setSelected(false);
             primButton.setDisable(true);
             dijkButton.setDisable(true);
@@ -363,7 +362,6 @@ public class MenuController implements Initializable {
             context.setup(new KruskalDisplayFactory());
         } catch (Exception e){
             System.out.println("Error occurred");
-            setButtonOnError();
         }
     }
 
@@ -383,7 +381,6 @@ public class MenuController implements Initializable {
             context.setup(new DijsktraDisplayFactory());
         } catch (Exception e){
             System.out.println("Error occurred");
-            setButtonOnError();
         }
     }
 
@@ -396,7 +393,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 
@@ -409,7 +405,6 @@ public class MenuController implements Initializable {
         } catch (Exception e){
             System.out.println("Error occurred");
             e.printStackTrace();
-            setButtonOnError();
         }
     }
 }

@@ -70,11 +70,11 @@
                   </Button>
                     </children>
                 </AnchorPane>
-            <Group fx:id="paneGroup" layoutX="200.0" onMouseClicked="#handle" onMousePressed="#handle" onMouseReleased="#handle">
-               <children>
-                  <Pane fx:id="viewer" prefHeight="600.0" prefWidth="1200.0" />
-               </children>
-            </Group>
+                <Group fx:id="paneGroup" layoutX="200.0" onMouseClicked="#handle" onMousePressed="#handle" onMouseReleased="#handle">
+                    <children>
+                        <Pane fx:id="viewer" prefHeight="600.0" prefWidth="1200.0" />
+                    </children>
+                </Group>
             </children>
         </AnchorPane>
     </children>
