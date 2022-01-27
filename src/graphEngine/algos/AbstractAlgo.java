@@ -1,10 +1,6 @@
 package graphEngine.algos;
 
 import graphEngine.graph.TreeMapGraph;
-import javafx.animation.FillTransition;
-import javafx.animation.StrokeTransition;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import sample.EdgeGraph;
 
 import java.util.ArrayList;
