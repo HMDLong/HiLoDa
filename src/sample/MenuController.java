@@ -256,6 +256,12 @@ public class MenuController implements Initializable {
         }
     }
 
+    public void setButtonOnError(){
+        kruButton.setDisable(true);
+        dijkButton.setDisable(true);
+        primButton.setDisable(true);
+    }
+
     //Clear current visualized edges when switch mode
     public void ClearColor(){
         try {
@@ -323,8 +329,10 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            //addNodeButton.setDisable(true);
-            //addEdgeButton.setDisable(true);
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setDisable(true);
+            dijkButton.setDisable(true);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             addNodeButton.setSelected(false);
@@ -347,6 +355,8 @@ public class MenuController implements Initializable {
             addNodeButton.setSelected(false);
             //addEdgeButton.setDisable(true);
             addEdgeButton.setSelected(false);
+            primButton.setDisable(true);
+            dijkButton.setDisable(true);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             context.setup(new KruskalDisplayFactory());
@@ -362,8 +372,10 @@ public class MenuController implements Initializable {
             ClearColor();
             addNode = false;
             addEdge = false;
-            //addNodeButton.setDisable(true);
-            //addEdgeButton.setDisable(true);
+            addNodeButton.setDisable(true);
+            addEdgeButton.setDisable(true);
+            kruButton.setDisable(true);
+            primButton.setDisable(true);
             runButton.setDisable(false);
             stepButton.setDisable(false);
             context.setup(new DijsktraDisplayFactory());
